@@ -4,7 +4,6 @@ from slack_bolt.context.say.async_say import AsyncSay
 from slack_sdk.web.async_client import AsyncWebClient
 from agent import AgentDeps, run_agent
 from listeners.views.block_kit_builder import build_bizpulse_response
-from chart_uploader import upload_chart_to_slack
 
 async def handle_message(
     client: AsyncWebClient,
@@ -38,24 +37,13 @@ async def handle_message(
             user_token=context.user_token,
         )
 
-        response_text, _, chart_bytes, chart_filename = await run_agent(text, deps=deps)
+        response_text, _ = await run_agent(text, deps=deps)
 
         await say(
             text=response_text,
             blocks=build_bizpulse_response(response_text),
             thread_ts=thread_ts,
         )
-
-        # Upload chart if generated
-        if chart_bytes and chart_filename:
-            await upload_chart_to_slack(
-                client=client,
-                channel_id=channel_id,
-                chart_bytes=chart_bytes,
-                filename=chart_filename,
-                title="📊 BizPulse Chart",
-                thread_ts=thread_ts,
-            )
 
     except Exception as e:
         logger.exception(f"Failed to handle message: {e}")
