@@ -49,3 +49,67 @@ BizPulse is an AI-powered business intelligence agent that lives inside Slack. A
 ---
 
 ## 🏗️ Architecture
+
+```
+User asks in Slack
+      ↓
+BizPulse Bolt Python Agent (Socket Mode)
+      ↓
+Salesforce OAuth 2.0 → Live CRM Data
+      ↓
+Gemini 2.5 Flash AI → Analyzes + Recommends
+      ↓
+Block Kit Response in Slack
+```
+
+---
+
+## ⚙️ Setup
+
+### Prerequisites
+- Python 3.12+
+- Slack Developer Sandbox
+- Salesforce Developer Account
+- Google Gemini API Key
+
+### Installation
+
+```bash
+git clone https://github.com/pkjranu/bizpulse.git
+cd bizpulse
+py -3.12 -m venv .venv
+.venv\Scripts\pip install -r requirements.txt
+```
+
+### Environment Variables
+
+Copy `.env.sample` to `.env` and fill in:
+
+```
+GEMINI_API_KEY=your_gemini_api_key
+SLACK_APP_TOKEN=xapp-your-app-token
+SLACK_BOT_TOKEN=xoxb-your-bot-token
+SF_CONSUMER_KEY=your_salesforce_consumer_key
+SF_CONSUMER_SECRET=your_salesforce_consumer_secret
+SF_INSTANCE_URL=https://your-org.my.salesforce.com
+```
+
+### Run
+
+```bash
+.venv\Scripts\python.exe app.py
+```
+
+---
+
+## 🏆 Hackathon
+
+Built for the **Slack Agent Builder Challenge 2026**
+Track: **New Slack Agent**
+Prize Target: **$8,000 First Place**
+
+---
+
+## 👨‍💻 Author
+
+Built with ❤️ by Praveen Jain
