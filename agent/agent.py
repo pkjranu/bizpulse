@@ -73,8 +73,7 @@ or any data that can be visualized, also return a JSON block at the END of your 
 in this exact format on a new line:
 CHART_DATA:{{"type":"bar","title":"Chart Title","data":{{"Label1":value1,"Label2":value2}}}}
 
-For pie charts use type "pie", for leaderboards use type "leaderboard", for bar charts use type "bar", for trends use type "line".
-Only include CHART_DATA when you have actual numeric data to chart."""
+For pie charts use type "pie", for leaderboards use type "leaderboard", for bar charts use type "bar", for trends use type "line", for pipeline conversion use type "funnel", for matrix data use type "heatmap" with keys as "row|col" format."""
 
 async def run_agent(
     text: str,
@@ -112,7 +111,9 @@ async def run_agent(
                 from chart_generator import (generate_pipeline_chart,
                                              generate_pie_chart,
                                              generate_leaderboard_chart,
-                                             generate_line_chart)
+                                             generate_line_chart,
+                             generate_funnel_chart,
+                             generate_heatmap)
                 try:
                     parts = response_text.split("CHART_DATA:")
                     clean_text = parts[0].strip()
@@ -128,6 +129,10 @@ async def run_agent(
                         chart_bytes = generate_leaderboard_chart(chart_data, chart_title)
                     elif chart_type == "line":
                         chart_bytes = generate_line_chart(chart_data, chart_title)
+                    elif chart_type == "funnel":
+                        chart_bytes = generate_funnel_chart(chart_data, chart_title)
+                    elif chart_type == "heatmap":
+                        chart_bytes = generate_heatmap(chart_data, chart_title)    
                     else:
                         chart_bytes = generate_pipeline_chart(chart_data)
 
